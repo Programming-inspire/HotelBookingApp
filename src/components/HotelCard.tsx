@@ -1,8 +1,7 @@
-// src/components/HotelCard.tsx
-
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Import the Icon component
 
 interface HotelCardProps {
   name: string;
@@ -12,9 +11,10 @@ interface HotelCardProps {
   bathrooms: number;
   guests: number;
   images: string[];
+  price: number;
 }
 
-const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images }) => {
+const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images, price }) => {
   return (
     <View style={styles.card}>
       <Swiper
@@ -32,12 +32,34 @@ const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bat
         ))}
       </Swiper>
       <Text style={styles.name}>{name}</Text>
-      <Text style={styles.details}>
-        Location: {location}   |   Rating: {rating}  
-      </Text>
-      <Text style={styles.details}>
-        Beds: {beds}   |   Baths: {bathrooms}   |   Guests: {guests}
-      </Text>
+      <View style={styles.detailsContainer}>
+        <View style={styles.detailItem}>
+          <Icon name="map-marker" size={16} color="#000" />
+          <Text style={styles.details}>{location}</Text>
+        </View>
+        <View style={styles.detailItem}>
+          <Icon name="star" size={16} color="#FFD700" />
+          <Text style={styles.details}>{rating}</Text>
+        </View>
+        <View style={styles.detailItem}>
+        <Icon name="money" size={20} color="green" />
+          <Text style={styles.price}>{price}</Text>
+        </View>
+      </View>
+      <View style={styles.detailsContainer}>
+        <View style={styles.detailItem}>
+          <Icon name="bed" size={16} color="#000" />
+          <Text style={styles.details}>{beds} Beds</Text>
+        </View>
+        <View style={styles.detailItem}>
+          <Icon name="bath" size={16} color="#000" />
+          <Text style={styles.details}>{bathrooms} Baths</Text>
+        </View>
+        <View style={styles.detailItem}>
+          <Icon name="users" size={16} color="#000" />
+          <Text style={styles.details}>{guests} Guests</Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -82,9 +104,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginVertical: 5,
   },
+  detailsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+  },
+  detailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   details: {
     color: 'black',
-    fontSize: 14,
+    fontSize: 16,
+    marginLeft: 5, // Add margin for spacing between icon and text
+  },
+  price: {
+    fontWeight: 'bold',
+    fontSize: 20, // Increased font size
+    color: 'green', // Set text color to green
+    marginLeft: 5, // Add margin for spacing between icon and price text
   },
 });
 
