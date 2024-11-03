@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -12,7 +13,7 @@ type HotelDetailRouteProp = RouteProp<{ params: {
   bathrooms: number;
   guests: number;
   images: string[];
-  price: number;
+  price: string;
   highlights: string[];
   description: string;
 } }, 'params'>;
@@ -33,57 +34,63 @@ const HotelDetailScreen: React.FC = () => {
   } = route.params;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Swiper
-        style={styles.wrapper}
-        autoplay={true}
-        autoplayTimeout={3}
-        showsPagination={true}
-        dot={<View style={styles.dot} />}
-        activeDot={<View style={styles.activeDot} />}
-      >
-        {images.map((image, index) => (
-          <View key={index} style={styles.slide}>
-            <Image source={{ uri: image }} style={styles.image} />
-          </View>
-        ))}
-      </Swiper>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Swiper
+          style={styles.wrapper}
+          autoplay={true}
+          autoplayTimeout={3}
+          showsPagination={true}
+          dot={<View style={styles.dot} />}
+          activeDot={<View style={styles.activeDot} />}
+        >
+          {images.map((image, index) => (
+            <View key={index} style={styles.slide}>
+              <Image source={{ uri: image }} style={styles.image} />
+            </View>
+          ))}
+        </Swiper>
 
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.location}>{location}</Text>
-      <View style={styles.ratingContainer}>
-        <Icon name="star" size={16} color="#FFD700" />
-        <Text style={styles.rating}>{rating}</Text>
-      </View>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.location}>{location}</Text>
+        <View style={styles.ratingContainer}>
+          <Icon name="star" size={16} color="#FFD700" />
+          <Text style={styles.rating}>{rating}</Text>
+        </View>
 
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>{beds} Beds | {bathrooms} Baths | {guests} Guests</Text>
-      </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoText}>{beds} Beds | {bathrooms} Baths | {guests} Guests</Text>
+        </View>
 
-      <Text style={styles.sectionTitle}>Highlights</Text>
-      <View style={styles.highlightsContainer}>
-        {highlights.map((highlight, index) => (
-          <View key={index} style={styles.highlightItem}>
-            <Text style={styles.highlightText}>{highlight}</Text>
-          </View>
-        ))}
-      </View>
+        <Text style={styles.sectionTitle}>Highlights</Text>
+        <View style={styles.highlightsContainer}>
+          {highlights.map((highlight, index) => (
+            <View key={index} style={styles.highlightItem}>
+              <Text style={styles.highlightText}>{highlight}</Text>
+            </View>
+          ))}
+        </View>
 
-      <Text style={styles.sectionTitle}>Description</Text>
-      <Text style={styles.description}>{description}</Text>
+        <Text style={styles.sectionTitle}>Description</Text>
+        <Text style={styles.description}>{description}</Text>
 
-      <View style={styles.priceContainer}>
-        <Text style={styles.price}>${price} total</Text>
-      </View>
+        <View style={styles.priceContainer}>
+          <Text style={styles.price}>${price} total</Text>
+        </View>
 
-      <TouchableOpacity style={styles.bookButton}>
-        <Text style={styles.bookButtonText}>Book Now</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <TouchableOpacity style={styles.bookButton}>
+          <Text style={styles.bookButtonText}>Book Now</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FFF',
+  },
   container: {
     padding: 10,
     backgroundColor: '#FFF',

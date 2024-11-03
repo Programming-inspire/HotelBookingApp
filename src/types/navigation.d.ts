@@ -10,7 +10,7 @@ export type RootStackParamList = {
       bathrooms: number;
       guests: number;
       images: string[];
-      price: number;
+      price: string;
       highlights: string[],
       description: string
     };

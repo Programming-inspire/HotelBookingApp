@@ -1,7 +1,6 @@
-// src/screens/HomeScreen.tsx
-
 import React, { useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHotels, setSearchQuery } from '../redux/slices/hotelSlice';
 import HotelCard from '../components/HotelCard';
@@ -30,21 +29,21 @@ const HomeScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <SearchBar value={searchQuery} onChange={handleSearchChange} /> {/* Add SearchBar */}
       <ScrollView>
         {filteredHotels.map((hotel) => (
           <HotelCard key={hotel.id} {...hotel} />
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00000',
+    backgroundColor: '#ffffff',
     padding: 10,
   },
 });

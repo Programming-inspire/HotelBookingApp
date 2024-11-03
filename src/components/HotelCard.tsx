@@ -1,4 +1,3 @@
-// src/components/HotelCard.tsx
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
@@ -15,15 +14,14 @@ interface HotelCardProps {
   bathrooms: number;
   guests: number;
   images: string[];
-  price: number;
+  price: string;
   highlights: string[];
   description: string;
 }
 
 type HotelCardNavigationProp = StackNavigationProp<RootStackParamList, 'HotelDetails'>;
 
-
-const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images, price, highlights, description}) => {
+const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images, price, highlights, description }) => {
   const navigation = useNavigation<HotelCardNavigationProp>();
 
   const handlePress = () => {
@@ -68,7 +66,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bat
           <Text style={styles.details}>{rating}</Text>
         </View>
         <View style={styles.detailItem}>
-          <Icon name="money" size={20} color="green" />
+          <Icon name="rupee" size={20} color="green" />
           <Text style={styles.price}>{price}</Text>
         </View>
       </View>
