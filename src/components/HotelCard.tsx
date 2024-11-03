@@ -1,7 +1,11 @@
+// src/components/HotelCard.tsx
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import the Icon component
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../types/navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface HotelCardProps {
   name: string;
@@ -12,11 +16,33 @@ interface HotelCardProps {
   guests: number;
   images: string[];
   price: number;
+  highlights: string[];
+  description: string;
 }
 
-const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images, price }) => {
+type HotelCardNavigationProp = StackNavigationProp<RootStackParamList, 'HotelDetails'>;
+
+
+const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images, price, highlights, description}) => {
+  const navigation = useNavigation<HotelCardNavigationProp>();
+
+  const handlePress = () => {
+    navigation.navigate('HotelDetails', {
+      name,
+      location,
+      rating,
+      beds,
+      bathrooms,
+      guests,
+      images,
+      price,
+      highlights,
+      description,
+    });
+  };
+
   return (
-    <View style={styles.card}>
+    <TouchableOpacity onPress={handlePress} style={styles.card}>
       <Swiper
         style={styles.wrapper}
         autoplay={true}
@@ -42,7 +68,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bat
           <Text style={styles.details}>{rating}</Text>
         </View>
         <View style={styles.detailItem}>
-        <Icon name="money" size={20} color="green" />
+          <Icon name="money" size={20} color="green" />
           <Text style={styles.price}>{price}</Text>
         </View>
       </View>
@@ -60,7 +86,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bat
           <Text style={styles.details}>{guests} Guests</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -70,10 +96,10 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
     padding: 10,
-    elevation: 3, // Add shadow effect for Android
+    elevation: 3,
   },
   wrapper: {
-    height: 200, // Adjust as needed
+    height: 200,
   },
   slide: {
     flex: 1,
@@ -116,13 +142,13 @@ const styles = StyleSheet.create({
   details: {
     color: 'black',
     fontSize: 16,
-    marginLeft: 5, // Add margin for spacing between icon and text
+    marginLeft: 5,
   },
   price: {
     fontWeight: 'bold',
-    fontSize: 20, // Increased font size
-    color: 'green', // Set text color to green
-    marginLeft: 5, // Add margin for spacing between icon and price text
+    fontSize: 20,
+    color: 'green',
+    marginLeft: 5,
   },
 });
 
