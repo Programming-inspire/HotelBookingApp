@@ -1,6 +1,7 @@
 // src/navigation.d.ts
 
 export type RootStackParamList = {
+    Splash: undefined;
     Dashboard: undefined; // No parameters expected in Home
     HotelDetails: {
       name: string;
