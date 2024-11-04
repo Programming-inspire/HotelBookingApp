@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Logo from '../asset/Hotel_Logo.png';
+import Logo from '../asset/Original_logo.png';
 import { useSplashAnimations } from '../utils/useSplashAnimations';
 
 
@@ -10,7 +10,7 @@ const SplashScreen = ({ navigation }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('');
+      navigation.replace('AuthScreen');
     }, 4000);
 
     return () => clearTimeout(timer);
@@ -23,7 +23,7 @@ const SplashScreen = ({ navigation }) => {
         style={[styles.image, { transform: [{ scale: springAnim }] }]} 
       />
       <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>
-        Book Stream
+       Easy Stay
       </Animated.Text>
       <View style={styles.iconContainer}>
         <View style={styles.line} />
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     textAlign: 'center',
     lineHeight: 41,
-    marginLeft: 30,
+
   },
   line: {
     height: 5,

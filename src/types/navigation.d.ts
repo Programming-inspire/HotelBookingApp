@@ -2,7 +2,10 @@
 
 export type RootStackParamList = {
     Splash: undefined;
-    Dashboard: undefined; // No parameters expected in Home
+    Dashboard: undefined;
+    AuthScreen: undefined;
+    ForgotPassword: undefined;
+    ResetPassword: undefined;
     HotelDetails: {
       name: string;
       location: string;
@@ -15,6 +18,4 @@ export type RootStackParamList = {
       highlights: string[],
       description: string
     };
-    // Add other screens here if necessary
   };
-  
