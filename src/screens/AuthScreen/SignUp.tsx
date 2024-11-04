@@ -39,7 +39,7 @@ const SignUp: React.FC<{ onSignUpSuccess: () => void }> = ({ onSignUpSuccess }) 
         placeholder="Email"
         placeholderTextColor="#000"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={(text) => setEmail(text.toLowerCase())}
       />
       <TextInput
         style={styles.input}
