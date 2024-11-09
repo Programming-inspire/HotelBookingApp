@@ -3,19 +3,56 @@ import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Dime
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [otp, setOtp] = useState('');
+  const [step, setStep] = useState(1);
+  const [userId, setUserId] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   const handleForgotPassword = async () => {
     try {
-      await axios.post('http://localhost:5000/forgot-password', { email });
-      Alert.alert('Success', 'Check your mailbox to receive the reset link', [
+      await axios.post('http://localhost:5000/forgot-password', { phone });
+      Alert.alert('Success', 'OTP sent to your mobile number', [
+        { text: 'OK', onPress: () => setStep(2) },
+      ]);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response && error.response.data) {
+        Alert.alert('Error', error.response.data.error);
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred');
+      }
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/verify-otp', { phone, otp });
+      setUserId(response.data.userId);
+      setStep(3);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response && error.response.data) {
+        Alert.alert('Error', error.response.data.error);
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred');
+      }
+    }
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      await axios.post('http://localhost:5000/reset-password', { userId, password: newPassword });
+      Alert.alert('Success', 'Password has been reset', [
         { text: 'OK', onPress: () => navigation.navigate('SignIn') },
       ]);
     } catch (error) {
-      Alert.alert('Error', 'Error sending password reset email');
+      if (axios.isAxiosError(error) && error.response && error.response.data) {
+        Alert.alert('Error', error.response.data.error);
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred');
+      }
     }
   };
 
@@ -29,17 +66,52 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Icon name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
         <View style={styles.innerContainer}>
-          <Text style={styles.title}>Forgot Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="#000"
-            value={email}
-            onChangeText={setEmail}
-          />
-          <TouchableOpacity style={styles.button} onPress={handleForgotPassword}>
-            <Text style={styles.buttonText}>Send Reset Link</Text>
-          </TouchableOpacity>
+          {step === 1 && (
+            <>
+              <Text style={styles.title}>Forgot Password</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Phone"
+                placeholderTextColor="#000"
+                value={phone}
+                onChangeText={setPhone}
+              />
+              <TouchableOpacity style={styles.button} onPress={handleForgotPassword}>
+                <Text style={styles.buttonText}>Send OTP</Text>
+              </TouchableOpacity>
+            </>
+          )}
+          {step === 2 && (
+            <>
+              <Text style={styles.title}>Enter OTP</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="OTP"
+                placeholderTextColor="#000"
+                value={otp}
+                onChangeText={setOtp}
+              />
+              <TouchableOpacity style={styles.button} onPress={handleVerifyOtp}>
+                <Text style={styles.buttonText}>Verify OTP</Text>
+              </TouchableOpacity>
+            </>
+          )}
+          {step === 3 && (
+            <>
+              <Text style={styles.title}>Reset Password</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="New Password"
+                placeholderTextColor="#000"
+                secureTextEntry
+                value={newPassword}
+                onChangeText={setNewPassword}
+              />
+              <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+                <Text style={styles.buttonText}>Reset Password</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

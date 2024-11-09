@@ -4,7 +4,6 @@ const cors = require('cors');
 const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
 const app = express();
@@ -18,57 +17,69 @@ mongoose.connect('mongodb://localhost:27017/HotelAuth')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-// Nodemailer setup
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'easystay.services@gmail.com',
-    pass: 'EasyStay1234$$',
-  },
-});
+// Mock Twilio client for development/testing
+const sendMockSms = async ({ body, from, to }) => {
+  console.log(`Mock SMS sent from ${from} to ${to}: ${body}`);
+  return Promise.resolve();
+};
 
 app.post('/forgot-password', async (req, res) => {
-  const { email } = req.body;
+  const { phone } = req.body;
   try {
-    const user = await User.findOne({ email });
-    if (!user) {return res.status(400).json({ error: 'User not found' });}
+    console.log(`Looking for user with phone: ${phone}`);
+    const user = await User.findOne({ phone });
+    if (!user) {
+      console.log('User not found');
+      return res.status(400).json({ error: 'User not found' });
+    }
 
-    const token = crypto.randomBytes(20).toString('hex');
-    user.resetPasswordToken = token;
+    const otp = crypto.randomInt(100000, 999999).toString();
+    user.resetPasswordToken = otp;
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
-    const mailOptions = {
-      to: user.email,
-      from: 'easystay.services@gmail.com',
-      subject: 'Password Reset',
-      text: 'Please click on the following link, or paste it into your browser to complete the process:\n\n' +
-            `http://localhost:3000/reset-password/${token}\n\n` +
-            'If you did not request this, please ignore this email and your password will remain unchanged.\n',
-    };
-
-    transporter.sendMail(mailOptions, (err, response) => {
-      if (err) {
-        console.error('There was an error: ', err);
-        res.status(500).json({ error: 'Error sending email' });
-      } else {
-        res.status(200).json('Recovery email sent');
-      }
+    await sendMockSms({
+      body: `Your OTP for password reset is ${otp}`,
+      from: 'MockTwilioNumber',
+      to: user.phone,
     });
+
+    return res.status(200).json('OTP sent to your mobile number');
   } catch (error) {
-    res.status(500).json({ error: 'Error sending email' });
+    console.error('Error in forgot-password route:', error);
+    return res.status(500).json({ error: 'Error sending OTP' });
   }
 });
 
-app.post('/reset-password/:token', async (req, res) => {
-  const { token } = req.params;
-  const { password } = req.body;
+app.post('/verify-otp', async (req, res) => {
+  const { phone, otp } = req.body;
   try {
+    console.log(`Looking for user with phone: ${phone} and OTP: ${otp}`);
     const user = await User.findOne({
-      resetPasswordToken: token,
+      phone,
+      resetPasswordToken: otp,
       resetPasswordExpires: { $gt: Date.now() },
     });
-    if (!user) {return res.status(400).json({ error: 'Password reset token is invalid or has expired' });}
+    if (!user) {
+      console.log('OTP is invalid or has expired');
+      return res.status(400).json({ error: 'OTP is invalid or has expired' });
+    }
+
+    return res.status(200).json({ message: 'OTP verified', userId: user._id });
+  } catch (error) {
+    console.error('Error in verify-otp route:', error);
+    return res.status(500).json({ error: 'Error verifying OTP' });
+  }
+});
+
+app.post('/reset-password', async (req, res) => {
+  const { userId, password } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log('User not found');
+      return res.status(400).json({ error: 'User not found' });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     user.password = hashedPassword;
@@ -76,21 +87,23 @@ app.post('/reset-password/:token', async (req, res) => {
     user.resetPasswordExpires = undefined;
     await user.save();
 
-    res.status(200).json({ message: 'Password has been reset' });
+    return res.status(200).json({ message: 'Password has been reset' });
   } catch (error) {
-    res.status(500).json({ error: 'Error resetting password' });
+    console.error('Error in reset-password route:', error);
+    return res.status(500).json({ error: 'Error resetting password' });
   }
 });
 
 app.post('/register', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, phone } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({ username, email, password: hashedPassword, phone });
     await newUser.save();
-    res.status(201).json({ message: 'User registered successfully' });
+    return res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Error registering user' });
+    console.error('Error in register route:', error);
+    return res.status(500).json({ error: 'Error registering user' });
   }
 });
 
@@ -98,15 +111,22 @@ app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
-    if (!user) {return res.status(400).json({ error: 'User not found' });}
+    if (!user) {
+      console.log('User not found');
+      return res.status(400).json({ error: 'User not found' });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {return res.status(400).json({ error: 'Invalid credentials' });}
+    if (!isMatch) {
+      console.log('Invalid credentials');
+      return res.status(400).json({ error: 'Invalid credentials' });
+    }
 
     const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
-    res.json({ token });
+    return res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: 'Error logging in' });
+    console.error('Error in login route:', error);
+    return res.status(500).json({ error: 'Error logging in' });
   }
 });
 

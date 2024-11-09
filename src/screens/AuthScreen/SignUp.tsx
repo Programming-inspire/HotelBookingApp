@@ -8,10 +8,11 @@ const SignUp: React.FC<{ onSignUpSuccess: () => void }> = ({ onSignUpSuccess }) 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/register', { username, email, password });
+      const response = await axios.post('http://localhost:5000/register', { username, email, password, phone });
       Alert.alert('Success', 'User registered successfully', [
         { text: 'OK', onPress: onSignUpSuccess }
       ]);
@@ -48,6 +49,13 @@ const SignUp: React.FC<{ onSignUpSuccess: () => void }> = ({ onSignUpSuccess }) 
         secureTextEntry
         value={password}
         onChangeText={setPassword}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Phone"
+        placeholderTextColor="#000"
+        value={phone}
+        onChangeText={setPhone}
       />
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
