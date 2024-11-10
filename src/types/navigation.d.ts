@@ -5,7 +5,7 @@ export type RootStackParamList = {
     Dashboard: undefined;
     AuthScreen: undefined;
     ForgotPassword: undefined;
-    ResetPassword: undefined;
+    Availability: undefined;
     HotelDetails: {
       name: string;
       location: string;

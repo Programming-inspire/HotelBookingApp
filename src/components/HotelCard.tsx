@@ -1,3 +1,5 @@
+// src/components/HotelCard.tsx
+
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
@@ -17,30 +19,33 @@ interface HotelCardProps {
   price: string;
   highlights: string[];
   description: string;
+  available?: boolean; // Add this line to handle availability
 }
 
 type HotelCardNavigationProp = StackNavigationProp<RootStackParamList, 'HotelDetails'>;
 
-const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images, price, highlights, description }) => {
+const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images, price, highlights, description, available = true }) => {
   const navigation = useNavigation<HotelCardNavigationProp>();
 
   const handlePress = () => {
-    navigation.navigate('HotelDetails', {
-      name,
-      location,
-      rating,
-      beds,
-      bathrooms,
-      guests,
-      images,
-      price,
-      highlights,
-      description,
-    });
+    if (available) {
+      navigation.navigate('HotelDetails', {
+        name,
+        location,
+        rating,
+        beds,
+        bathrooms,
+        guests,
+        images,
+        price,
+        highlights,
+        description,
+      });
+    }
   };
 
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.card}>
+    <TouchableOpacity onPress={handlePress} style={styles.card} disabled={!available}>
       <Swiper
         style={styles.wrapper}
         autoplay={true}

@@ -1,7 +1,10 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const User = require('./models/User');
+const Booking = require('./models/Booking');
+const Hotel = require('./models/Hotel'); // Import the Hotel model
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -127,6 +130,48 @@ app.post('/login', async (req, res) => {
   } catch (error) {
     console.error('Error in login route:', error);
     return res.status(500).json({ error: 'Error logging in' });
+  }
+});
+
+// Create a booking
+app.post('/book', async (req, res) => {
+  const { hotelId, userId, startDate, endDate, adults, kids } = req.body;
+  try {
+    const newBooking = new Booking({ hotelId, userId, startDate, endDate, adults, kids });
+    await newBooking.save();
+    return res.status(201).json({ message: 'Booking created successfully' });
+  } catch (error) {
+    console.error('Error in book route:', error);
+    return res.status(500).json({ error: 'Error creating booking' });
+  }
+});
+
+// Check availability
+app.post('/check-availability', async (req, res) => {
+  const { city, startDate, endDate, adults, kids } = req.body;
+  try {
+    // Fetch hotels in the specified city
+    const hotels = await Hotel.find({ location: city });
+
+    // Check availability for each hotel
+    const availableHotels = [];
+    for (const hotel of hotels) {
+      const bookings = await Booking.find({
+        hotelId: hotel._id,
+        $or: [
+          { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
+        ],
+      });
+
+      if (bookings.length === 0) {
+        availableHotels.push(hotel);
+      }
+    }
+
+    return res.status(200).json({ availableHotels });
+  } catch (error) {
+    console.error('Error in check-availability route:', error);
+    return res.status(500).json({ error: 'Error checking availability' });
   }
 });
 

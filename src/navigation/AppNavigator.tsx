@@ -7,7 +7,7 @@ import HotelDetailsScreen from '../screens/HotelDetailsScreen';
 import SplashScreen from '../screens/SplashScreen';
 import AuthScreen from '../screens/AuthScreen/AuthScreen';
 import ForgotPassword from '../screens/AuthScreen/ForgotPassword';
-import ResetPassword from '../screens/AuthScreen/ResetPassword';
+import AvailabilityScreen from '../screens/AvailabilityScreen';
 import { RootStackParamList } from '../types/navigation';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -15,12 +15,12 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AuthScreen">
+      <Stack.Navigator initialRouteName="Dashboard">
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AuthScreen" component={AuthScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
-        <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
         <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Availability" component={AvailabilityScreen} options={{ title: 'Check Availability' }} />
         <Stack.Screen name="HotelDetails" component={HotelDetailsScreen} options={{ title: 'Hotel Details' }} />
       </Stack.Navigator>
     </NavigationContainer>

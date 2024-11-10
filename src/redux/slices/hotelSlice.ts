@@ -1,6 +1,8 @@
 // src/redux/slices/hotelSlice.ts
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch } from '../store';
+import { hotelsData } from '../../data/hotelData'; // Import mock data
 
 interface Hotel {
   id: number;
@@ -14,16 +16,19 @@ interface Hotel {
   price: number;
   highlights: string[];
   description: string;
+  available?: boolean; // Add this line to handle availability
 }
 
 interface HotelsState {
   hotels: Hotel[];
-  searchQuery: string; // Add this line
+  searchQuery: string;
+  filteredHotels: Hotel[];
 }
 
 const initialState: HotelsState = {
   hotels: [],
-  searchQuery: '', // Add this line
+  searchQuery: '',
+  filteredHotels: [],
 };
 
 const hotelsSlice = createSlice({
@@ -31,13 +36,23 @@ const hotelsSlice = createSlice({
   initialState,
   reducers: {
     setHotels(state, action: PayloadAction<Hotel[]>) {
-      state.hotels = action.payload;
+      state.hotels = action.payload.map(hotel => ({ ...hotel, available: true }));
+      state.filteredHotels = state.hotels;
     },
-    setSearchQuery(state, action: PayloadAction<string>) { // Add this reducer
+    setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
+    },
+    setFilteredHotels(state, action: PayloadAction<Hotel[]>) {
+      state.filteredHotels = action.payload;
     },
   },
 });
 
-export const { setHotels, setSearchQuery } = hotelsSlice.actions;
+export const { setHotels, setSearchQuery, setFilteredHotels } = hotelsSlice.actions;
+
+export const filterHotels = (filterCriteria: { city: string }) => (dispatch: AppDispatch) => {
+  const filteredHotels = hotelsData.filter(hotel => hotel.location === filterCriteria.city);
+  dispatch(setFilteredHotels(filteredHotels));
+};
+
 export default hotelsSlice.reducer;
