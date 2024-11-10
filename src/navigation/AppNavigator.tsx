@@ -8,6 +8,7 @@ import SplashScreen from '../screens/SplashScreen';
 import AuthScreen from '../screens/AuthScreen/AuthScreen';
 import ForgotPassword from '../screens/AuthScreen/ForgotPassword';
 import AvailabilityScreen from '../screens/AvailabilityScreen';
+import BookingScreen from '../screens/BookingScreen';
 import { RootStackParamList } from '../types/navigation';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -22,6 +23,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Availability" component={AvailabilityScreen} options={{ title: 'Check Availability' }} />
         <Stack.Screen name="HotelDetails" component={HotelDetailsScreen} options={{ title: 'Hotel Details' }} />
+        <Stack.Screen name="Booking" component={BookingScreen} options={{ title: 'Booking' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

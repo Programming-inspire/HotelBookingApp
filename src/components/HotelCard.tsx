@@ -9,6 +9,7 @@ import { RootStackParamList } from '../types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 interface HotelCardProps {
+  id: number; // Add this line to include hotel ID
   name: string;
   location: string;
   rating: number;
@@ -24,12 +25,13 @@ interface HotelCardProps {
 
 type HotelCardNavigationProp = StackNavigationProp<RootStackParamList, 'HotelDetails'>;
 
-const HotelCard: React.FC<HotelCardProps> = ({ name, location, rating, beds, bathrooms, guests, images, price, highlights, description, available = true }) => {
+const HotelCard: React.FC<HotelCardProps> = ({ id, name, location, rating, beds, bathrooms, guests, images, price, highlights, description, available = true }) => {
   const navigation = useNavigation<HotelCardNavigationProp>();
 
   const handlePress = () => {
     if (available) {
       navigation.navigate('HotelDetails', {
+        id, // Pass the hotel ID
         name,
         location,
         rating,

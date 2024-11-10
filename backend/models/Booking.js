@@ -1,4 +1,3 @@
-// models/Booking.js
 const mongoose = require('mongoose');
 
 const BookingSchema = new mongoose.Schema({
@@ -8,6 +7,7 @@ const BookingSchema = new mongoose.Schema({
   endDate: { type: Date, required: true },
   adults: { type: Number, required: true },
   kids: { type: Number, required: true },
+  totalAmount: { type: Number, required: true }, // Add this line
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);

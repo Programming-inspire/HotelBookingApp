@@ -1,11 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types/navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 type HotelDetailRouteProp = RouteProp<{ params: {
+  id: number;
   name: string;
   location: string;
   rating: number;
@@ -18,9 +23,13 @@ type HotelDetailRouteProp = RouteProp<{ params: {
   description: string;
 } }, 'params'>;
 
+type BookingNavigationProp = StackNavigationProp<RootStackParamList, 'Booking'>;
+
 const HotelDetailScreen: React.FC = () => {
   const route = useRoute<HotelDetailRouteProp>();
+  const navigation = useNavigation<BookingNavigationProp>();
   const {
+    id: hotelId,
     name,
     location,
     rating,
@@ -32,6 +41,16 @@ const HotelDetailScreen: React.FC = () => {
     highlights,
     description,
   } = route.params;
+
+  const userId = useSelector((state: RootState) => state.user.id); // Assuming you have user ID in your Redux store
+
+  const handleBookNow = () => {
+    navigation.navigate('Booking', {
+      hotelId,
+      userId,
+      price,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -78,7 +97,7 @@ const HotelDetailScreen: React.FC = () => {
           <Text style={styles.price}>${price} total</Text>
         </View>
 
-        <TouchableOpacity style={styles.bookButton}>
+        <TouchableOpacity style={styles.bookButton} onPress={handleBookNow}>
           <Text style={styles.bookButtonText}>Book Now</Text>
         </TouchableOpacity>
       </ScrollView>

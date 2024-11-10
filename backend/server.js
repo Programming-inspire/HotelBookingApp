@@ -135,9 +135,17 @@ app.post('/login', async (req, res) => {
 
 // Create a booking
 app.post('/book', async (req, res) => {
-  const { hotelId, userId, startDate, endDate, adults, kids } = req.body;
+  const { hotelId, userId, startDate, endDate, adults, kids, totalAmount } = req.body;
   try {
-    const newBooking = new Booking({ hotelId, userId, startDate, endDate, adults, kids });
+    const newBooking = new Booking({
+      hotelId: new mongoose.Types.ObjectId(hotelId), // Convert to ObjectId
+      userId: new mongoose.Types.ObjectId(userId), // Convert to ObjectId
+      startDate,
+      endDate,
+      adults,
+      kids,
+      totalAmount,
+    });
     await newBooking.save();
     return res.status(201).json({ message: 'Booking created successfully' });
   } catch (error) {
