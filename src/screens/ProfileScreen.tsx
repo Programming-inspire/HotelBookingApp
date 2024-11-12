@@ -1,22 +1,34 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearUser } from '../redux/slices/userSlice';
+import { RootState } from '../redux/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
 
-  const handleLogout = () => {
-    // Clear any stored user data or tokens here
-    // For example, if you're using AsyncStorage:
-    // await AsyncStorage.removeItem('userToken');
+  const handleLogout = async () => {
+    try {
+      // Clear any stored user data or tokens here
+      await AsyncStorage.removeItem('token');
 
-    // Navigate to the AuthScreen
-    navigation.replace('AuthScreen');
+      // Dispatch clearUser action
+      dispatch(clearUser());
+
+      // Navigate to the AuthScreen
+      navigation.replace('AuthScreen');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text>Profile Screen</Text>
+      <Text>Hello, {user.name}!</Text>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>

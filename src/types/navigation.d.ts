@@ -7,9 +7,7 @@ export type RootStackParamList = {
     ForgotPassword: undefined;
     Availability: undefined;
     Booking: {
-      hotelId: number;
-      userId: any;
-      price: string;
+      hotelId: number; hotelName: string; location: string; userId: any; price: string
     };
     HotelDetails: {
       id: number;

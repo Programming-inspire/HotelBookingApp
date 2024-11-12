@@ -113,32 +113,77 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
+    console.log(`Attempting to log in user with email: ${email}`);
     const user = await User.findOne({ email });
     if (!user) {
       console.log('User not found');
       return res.status(400).json({ error: 'User not found' });
     }
 
+    console.log('User found, checking password');
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       console.log('Invalid credentials');
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
+    console.log('Password is correct, generating token');
     const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
-    return res.json({ token });
+    console.log('Token generated, sending response');
+    return res.json({ token, user: { _id: user._id, username: user.username, email: user.email } });
   } catch (error) {
     console.error('Error in login route:', error);
     return res.status(500).json({ error: 'Error logging in' });
   }
 });
 
+
+
+// Check availability
+app.post('/check-availability', async (req, res) => {
+  const { hotelName, location, startDate, endDate } = req.body;
+  try {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const existingBookings = await Booking.find({
+      hotelName,
+      location,
+      $or: [
+        { startDate: { $lt: end }, endDate: { $gt: start } },
+      ],
+    });
+
+    if (existingBookings.length > 0) {
+      return res.status(400).json({ error: 'The hotel is already booked for the selected dates. Please choose different dates.' });
+    }
+
+    return res.status(200).json({ message: 'The hotel is available for the selected dates.' });
+  } catch (error) {
+    console.error('Error in check-availability route:', error);
+    return res.status(500).json({ error: 'Error checking availability' });
+  }
+});
+
+
+
+
+
 // Create a booking
 app.post('/book', async (req, res) => {
-  const { hotelId, userId, startDate, endDate, adults, kids, totalAmount } = req.body;
+  const { hotelId, hotelName, location, userId, startDate, endDate, adults, kids, totalAmount } = req.body;
   try {
+    console.log('Booking request received:', req.body);
+
+    if (!hotelName || !location) {
+      console.error('Missing hotelName or location:', { hotelName, location });
+      return res.status(400).json({ error: 'hotelName and location are required' });
+    }
+
     const newBooking = new Booking({
       hotelId: new mongoose.Types.ObjectId(hotelId), // Convert to ObjectId
+      hotelName,
+      location,
       userId: new mongoose.Types.ObjectId(userId), // Convert to ObjectId
       startDate,
       endDate,
@@ -146,7 +191,9 @@ app.post('/book', async (req, res) => {
       kids,
       totalAmount,
     });
+
     await newBooking.save();
+    console.log('Booking created successfully');
     return res.status(201).json({ message: 'Booking created successfully' });
   } catch (error) {
     console.error('Error in book route:', error);
@@ -154,33 +201,6 @@ app.post('/book', async (req, res) => {
   }
 });
 
-// Check availability
-app.post('/check-availability', async (req, res) => {
-  const { city, startDate, endDate, adults, kids } = req.body;
-  try {
-    // Fetch hotels in the specified city
-    const hotels = await Hotel.find({ location: city });
 
-    // Check availability for each hotel
-    const availableHotels = [];
-    for (const hotel of hotels) {
-      const bookings = await Booking.find({
-        hotelId: hotel._id,
-        $or: [
-          { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
-        ],
-      });
-
-      if (bookings.length === 0) {
-        availableHotels.push(hotel);
-      }
-    }
-
-    return res.status(200).json({ availableHotels });
-  } catch (error) {
-    console.error('Error in check-availability route:', error);
-    return res.status(500).json({ error: 'Error checking availability' });
-  }
-});
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

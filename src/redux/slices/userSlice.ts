@@ -1,17 +1,15 @@
-// src/redux/slices/userSlice.ts
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
-  id: number;
+  id: string | null;
   name: string;
   email: string;
 }
 
 const initialState: UserState = {
-  id: 1, // Replace with actual user ID
-  name: 'John Doe',
-  email: 'john.doe@example.com',
+  id: null,
+  name: '',
+  email: '',
 };
 
 const userSlice = createSlice({
@@ -23,8 +21,13 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.email = action.payload.email;
     },
+    clearUser(state) {
+      state.id = null;
+      state.name = '';
+      state.email = '';
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, clearUser } = userSlice.actions;
 export default userSlice.reducer;

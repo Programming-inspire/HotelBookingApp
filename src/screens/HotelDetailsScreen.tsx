@@ -47,6 +47,8 @@ const HotelDetailScreen: React.FC = () => {
   const handleBookNow = () => {
     navigation.navigate('Booking', {
       hotelId,
+      hotelName: name,
+      location,
       userId,
       price,
     });
@@ -104,7 +106,6 @@ const HotelDetailScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

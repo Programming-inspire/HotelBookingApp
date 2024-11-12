@@ -1,20 +1,35 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/slices/userSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
 const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const handleSignIn = async () => {
     try {
+      console.log('Attempting to sign in');
       const response = await axios.post('http://localhost:5000/login', { email, password });
+      console.log('Response received:', response.data);
+      const { token, user } = response.data;
+
+      // Save token to AsyncStorage
+      await AsyncStorage.setItem('token', token);
+
+      // Dispatch setUser action
+      dispatch(setUser({ id: user._id, name: user.username, email: user.email }));
+
       Alert.alert('Success', 'User logged in successfully', [
         { text: 'OK', onPress: () => navigation.navigate('Dashboard') }
       ]);
     } catch (error) {
+      console.error('Error logging in:', error);
       Alert.alert('Error', 'Invalid credentials. Please try again.');
     }
   };
