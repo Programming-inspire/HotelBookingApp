@@ -1,12 +1,15 @@
 // src/redux/store.ts
+
 import { configureStore } from '@reduxjs/toolkit';
 import hotelsReducer from './slices/hotelSlice';
-import userReducer from './slices/userSlice'; // Import user slice
+import userReducer from './slices/userSlice';
+import bookingsReducer from './slices/bookingSlice';
 
 const store = configureStore({
   reducer: {
     hotels: hotelsReducer,
-    user: userReducer, // Add user slice
+    user: userReducer,
+    bookings: bookingsReducer,
   },
 });
 

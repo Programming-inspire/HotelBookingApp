@@ -203,4 +203,45 @@ app.post('/book', async (req, res) => {
 
 
 
+// Add this endpoint to handle booking cancellation
+// Server-side endpoint to cancel a booking
+app.delete('/cancel-booking/:id', async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+
+    // Use `findByIdAndDelete` directly on the model to delete the document by its ID
+    const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+
+    if (!deletedBooking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    res.status(200).json({ message: 'Booking successfully canceled' });
+  } catch (error) {
+    console.error('Error in cancel-booking route:', error);
+    res.status(500).json({ message: 'Error canceling booking' });
+  }
+});
+
+
+// Add this endpoint to fetch bookings for a specific user
+// server.js
+
+app.get('/bookings', async (req, res) => {
+  const { userId } = req.query;
+  try {
+    console.log(`Fetching bookings for user ID: ${userId}`);
+    const bookings = await Booking.find({ userId });
+    console.log('Fetched bookings:', bookings);
+    return res.status(200).json(bookings);
+  } catch (error) {
+    console.error('Error in fetching bookings:', error);
+    return res.status(500).json({ error: 'Error fetching bookings' });
+  }
+});
+
+
+
+
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
