@@ -1,3 +1,5 @@
+// src/screens/WishlistScreen.tsx
+
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +17,10 @@ const WishlistScreen = () => {
     }
   }, [dispatch, user.id]);
 
+  useEffect(() => {
+    console.log('Bookings:', bookings);
+  }, [bookings]);
+
   const handleCancelBooking = (bookingId: string) => {
     Alert.alert(
       'Cancel Booking',
@@ -29,14 +35,20 @@ const WishlistScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {bookings.length > 0 ? (
-        bookings.map((booking) => (
-          <View key={booking._id} style={styles.bookingItem}>
-            <Text>{booking.hotelName}</Text>
-            <Text>{booking.location}</Text>
-            <Text>{new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}</Text>
-            <Button title="Cancel Booking" color="red" onPress={() => handleCancelBooking(booking._id)} />
-          </View>
-        ))
+        bookings.map((booking) => {
+          const startDate = new Date(booking.startDate);
+          const endDate = new Date(booking.endDate);
+          console.log('Start Date:', startDate);
+          console.log('End Date:', endDate);
+          return (
+            <View key={booking._id} style={styles.bookingItem}>
+              <Text>{booking.hotelName}</Text>
+              <Text>{booking.location}</Text>
+              <Text>{startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</Text>
+              <Button title="Cancel Booking" color="red" onPress={() => handleCancelBooking(booking._id)} />
+            </View>
+          );
+        })
       ) : (
         <Text>No bookings found</Text>
       )}

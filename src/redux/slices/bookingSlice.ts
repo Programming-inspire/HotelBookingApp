@@ -1,6 +1,6 @@
 // src/redux/slices/bookingSlice.ts
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface Booking {
@@ -54,7 +54,11 @@ export const cancelBooking = createAsyncThunk(
 const bookingsSlice = createSlice({
   name: 'bookings',
   initialState,
-  reducers: {},
+  reducers: {
+    addBooking: (state, action: PayloadAction<Booking>) => {
+      state.userBookings.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserBookings.pending, (state) => {
@@ -80,4 +84,5 @@ const bookingsSlice = createSlice({
   },
 });
 
+export const { addBooking } = bookingsSlice.actions;
 export default bookingsSlice.reducer;

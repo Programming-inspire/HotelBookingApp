@@ -1,9 +1,14 @@
+// src/screens/BookingScreen.tsx
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../redux/store';
 import axios from 'axios';
+import { addBooking, fetchUserBookings } from '../redux/slices/bookingSlice';
 
 type BookingRouteProp = RouteProp<{ params: {
   hotelId: string;
@@ -16,6 +21,7 @@ type BookingRouteProp = RouteProp<{ params: {
 const BookingScreen: React.FC = () => {
   const route = useRoute<BookingRouteProp>();
   const { hotelId, hotelName, location, userId, price } = route.params;
+  const dispatch = useDispatch<AppDispatch>();
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -46,16 +52,14 @@ const BookingScreen: React.FC = () => {
       setIsAvailable(true);
       calculateTotalAmount();
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        Alert.alert('Error', error.response.data.error);
+      if ((error as any).response && (error as any).response.data && (error as any).response.data.error) {
+        Alert.alert('Error', (error as any).response.data.error);
       } else {
         Alert.alert('Error', 'Failed to check availability');
       }
       setIsAvailable(false);
     }
   };
-
-
 
   const handlePayment = async () => {
     if (parseFloat(paymentAmount) !== totalAmount) {
@@ -88,23 +92,28 @@ const BookingScreen: React.FC = () => {
         totalAmount,
       });
 
+      const newBooking = response.data; // Assuming the backend returns the new booking
+      dispatch(addBooking(newBooking));
+      dispatch(fetchUserBookings(userId)); // Refresh the bookings
+
       Alert.alert('Success', response.data.message);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        Alert.alert('Error', error.response.data.error);
+      const err = error as any;
+      if (err.response && err.response.data && err.response.data.error) {
+        Alert.alert('Error', (err.response.data as { error: string }).error);
       } else {
         Alert.alert('Error', 'Failed to create booking');
       }
     }
   };
 
-  const onStartDateChange = (event, selectedDate) => {
+  const onStartDateChange = (event: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || startDate;
     setShowStartDatePicker(false);
     setStartDate(currentDate);
   };
 
-  const onEndDateChange = (event, selectedDate) => {
+  const onEndDateChange = (event: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || endDate;
     setShowEndDatePicker(false);
     setEndDate(currentDate);
@@ -179,7 +188,6 @@ const BookingScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
