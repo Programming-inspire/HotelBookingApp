@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import MapView, { Marker } from 'react-native-maps';
 
 type HotelDetailRouteProp = RouteProp<{ params: {
   id: number;
@@ -21,6 +22,8 @@ type HotelDetailRouteProp = RouteProp<{ params: {
   price: string;
   highlights: string[];
   description: string;
+  Latitude: number;
+  Longitude: number;
 } }, 'params'>;
 
 type BookingNavigationProp = StackNavigationProp<RootStackParamList, 'Booking'>;
@@ -40,6 +43,8 @@ const HotelDetailScreen: React.FC = () => {
     price,
     highlights,
     description,
+    Latitude,
+    Longitude,
   } = route.params;
 
   const userId = useSelector((state: RootState) => state.user.id); // Assuming you have user ID in your Redux store
@@ -95,6 +100,27 @@ const HotelDetailScreen: React.FC = () => {
         <Text style={styles.sectionTitle}>Description</Text>
         <Text style={styles.description}>{description}</Text>
 
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: Latitude,
+              longitude: Longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          >
+            <Marker
+              coordinate={{
+                latitude: Latitude,
+                longitude: Longitude,
+              }}
+              title={name}
+              description={location}
+            />
+          </MapView>
+        </View>
+
         <View style={styles.priceContainer}>
           <Text style={styles.price}>${price} total</Text>
         </View>
@@ -106,6 +132,7 @@ const HotelDetailScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -212,6 +239,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     marginVertical: 10,
+  },
+  mapContainer: {
+    height: 200,
+    marginVertical: 20,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
 

@@ -22,6 +22,8 @@ export const hotelsData = [
       ],
       description:
         'A beautiful resort located on a private island with stunning ocean views. Perfect for a relaxing getaway.',
+        Latitude: -26.418560,
+        Longitude: 153.088060,
     },
     {
       id: 2,
@@ -45,6 +47,8 @@ export const hotelsData = [
       ],
       description:
         'Enjoy the majestic mountain views in the heart of the Alps with premium amenities and ski access.',
+        Latitude: 36.292580,
+        Longitude: -92.288280,
     },
     {
       id: 3,
@@ -68,6 +72,8 @@ export const hotelsData = [
       ],
       description:
         'Located in the heart of NYC, this hotel offers modern rooms and amazing amenities, including a rooftop pool.',
+        Latitude: 40.598070,
+        Longitude: -74.089550,
     },
     {
       id: 4,
@@ -91,6 +97,8 @@ export const hotelsData = [
       ],
       description:
         'A paradise retreat with direct beach access and exclusive services, perfect for a luxurious beach holiday.',
+        Latitude: 19.573130,
+        Longitude: -154.975490,
     },
     {
       id: 5,
@@ -115,5 +123,7 @@ export const hotelsData = [
       ],
       description:
         'Experience serenity at Lake Tahoe’s finest lodge, surrounded by nature and activities for outdoor enthusiasts.',
+        Latitude: 39.011390,
+        Longitude: -120.118900,
     },
   ];
