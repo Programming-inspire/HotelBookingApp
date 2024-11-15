@@ -242,6 +242,49 @@ app.get('/bookings', async (req, res) => {
 
 
 
+// server.js
+
+app.post('/filter-hotels', async (req, res) => {
+  const { city, startDate, endDate } = req.body;
+  try {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    console.log(`Filtering hotels for city: ${city}, startDate: ${startDate}, endDate: ${endDate}`);
+
+    // Find hotels that are booked during the selected dates
+    const unavailableHotels = await Booking.find({
+      location: city,
+      $or: [
+        { startDate: { $lt: end }, endDate: { $gt: start } },
+      ],
+    }).distinct('hotelName');
+
+    console.log('Unavailable hotels:', unavailableHotels);
+
+    // Find all hotels in the selected city
+    const hotels = await Hotel.find({ location: city });
+
+    console.log('All hotels in city:', hotels);
+
+    // Mark hotels as available or not based on the booking data
+    const filteredHotels = hotels.map(hotel => ({
+      ...hotel.toObject(),
+      available: !unavailableHotels.includes(hotel.name),
+    }));
+
+    console.log('Filtered hotels:', filteredHotels);
+
+    return res.status(200).json(filteredHotels);
+  } catch (error) {
+    console.error('Error in filter-hotels route:', error);
+    return res.status(500).json({ error: 'Error filtering hotels' });
+  }
+});
+
+
+
+
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

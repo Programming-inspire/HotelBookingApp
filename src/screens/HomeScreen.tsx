@@ -1,5 +1,3 @@
-// src/screens/HomeScreen.tsx
-
 import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,6 +20,10 @@ const HomeScreen = () => {
   const handleSearchChange = (text: string) => {
     dispatch(setSearchQuery(text));
   };
+
+  useEffect(() => {
+    console.log('Filtered hotels:', hotels);
+  }, [hotels]);
 
   const filteredHotels = hotels.filter(hotel =>
     hotel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

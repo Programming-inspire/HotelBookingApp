@@ -1,4 +1,3 @@
-// src/screens/AvailabilityScreen.tsx
 import React, { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, StyleSheet, TextInput, View, Platform, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -14,16 +13,13 @@ const AvailabilityScreen = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
-  const [persons, setPersons] = useState('');
-  const [adults, setAdults] = useState('');
-  const [kids, setKids] = useState('');
   const navigation = useNavigation();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleFilter = () => {
     const formattedStartDate = startDate.toISOString().split('T')[0];
     const formattedEndDate = endDate.toISOString().split('T')[0];
-    dispatch(filterHotels({ city, startDate: formattedStartDate, endDate: formattedEndDate, adults: parseInt(adults), kids: parseInt(kids) }));
+    dispatch(filterHotels({ city, startDate: formattedStartDate, endDate: formattedEndDate }));
     navigation.navigate('Dashboard');
   };
 
@@ -46,21 +42,6 @@ const AvailabilityScreen = () => {
       if (selectedDate) {
         setEndDate(selectedDate);
       }
-    }
-  };
-
-  const handlePersonsChange = (text: string) => {
-    setPersons(text);
-    setAdults('');
-    setKids('');
-  };
-
-  const handleAdultsChange = (text: string) => {
-    const totalPersons = parseInt(persons);
-    const adultsCount = parseInt(text);
-    if (adultsCount <= totalPersons) {
-      setAdults(text);
-      setKids((totalPersons - adultsCount).toString());
     }
   };
 
@@ -100,31 +81,6 @@ const AvailabilityScreen = () => {
             onChange={(event, date) => onDateChange(event, date, 'end')}
           />
         )}
-        <TextInput
-          style={styles.input}
-          placeholder="Number of Persons"
-          keyboardType="numeric"
-          value={persons}
-          onChangeText={handlePersonsChange}
-        />
-        {persons && (
-          <>
-            <TextInput
-              style={styles.input}
-              placeholder="Adults"
-              keyboardType="numeric"
-              value={adults}
-              onChangeText={handleAdultsChange}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Kids"
-              keyboardType="numeric"
-              value={kids}
-              editable={false}
-            />
-          </>
-        )}
         <TouchableOpacity style={styles.button} onPress={handleFilter}>
           <Text style={styles.buttonText}>Filter</Text>
         </TouchableOpacity>
@@ -148,9 +104,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   pickerContainer: {
-
     borderRadius: 5,
-    marginBottom: 100,
+    marginBottom: 150,
   },
   picker: {
     height: 50,

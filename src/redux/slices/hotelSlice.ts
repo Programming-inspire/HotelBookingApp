@@ -1,8 +1,5 @@
-// src/redux/slices/hotelSlice.ts
-
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppDispatch } from '../store';
-import { hotelsData } from '../../data/hotelData'; // Import mock data
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 interface Hotel {
   id: number;
@@ -13,10 +10,10 @@ interface Hotel {
   beds: number;
   bathrooms: number;
   guests: number;
-  price: number;
+  price: string;
   highlights: string[];
   description: string;
-  available?: boolean; // Add this line to handle availability
+  available?: boolean;
 }
 
 interface HotelsState {
@@ -30,6 +27,16 @@ const initialState: HotelsState = {
   searchQuery: '',
   filteredHotels: [],
 };
+
+export const filterHotels = createAsyncThunk(
+  'hotels/filterHotels',
+  async (filterCriteria: { city: string; startDate: string; endDate: string }) => {
+    console.log('Filtering hotels with criteria:', filterCriteria);
+    const response = await axios.post('http://localhost:5000/filter-hotels', filterCriteria);
+    console.log('Filtered hotels response:', response.data);
+    return response.data;
+  }
+);
 
 const hotelsSlice = createSlice({
   name: 'hotels',
@@ -46,13 +53,13 @@ const hotelsSlice = createSlice({
       state.filteredHotels = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(filterHotels.fulfilled, (state, action) => {
+      console.log('Updating state with filtered hotels:', action.payload);
+      state.filteredHotels = action.payload;
+    });
+  },
 });
 
 export const { setHotels, setSearchQuery, setFilteredHotels } = hotelsSlice.actions;
-
-export const filterHotels = (filterCriteria: { city: string }) => (dispatch: AppDispatch) => {
-  const filteredHotels = hotelsData.filter(hotel => hotel.location === filterCriteria.city);
-  dispatch(setFilteredHotels(filteredHotels));
-};
-
 export default hotelsSlice.reducer;
