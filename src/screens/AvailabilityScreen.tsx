@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet, TextInput, View, Platform, ScrollView } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet, View, Platform, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux/store';
-import { filterHotels } from '../redux/slices/hotelSlice';
+import { filterHotels, setFilterLocation } from '../redux/slices/hotelSlice';
 
 const AvailabilityScreen = () => {
   const [city, setCity] = useState('');
@@ -20,6 +20,7 @@ const AvailabilityScreen = () => {
     const formattedStartDate = startDate.toISOString().split('T')[0];
     const formattedEndDate = endDate.toISOString().split('T')[0];
     dispatch(filterHotels({ city, startDate: formattedStartDate, endDate: formattedEndDate }));
+    dispatch(setFilterLocation(city)); // Set the filter location
     navigation.navigate('Dashboard');
   };
 

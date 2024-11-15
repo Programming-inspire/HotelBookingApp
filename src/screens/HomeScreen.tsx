@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, ScrollView, View, Text } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHotels, setSearchQuery } from '../redux/slices/hotelSlice';
+import { setHotels, setSearchQuery, clearFilter } from '../redux/slices/hotelSlice';
 import HotelCard from '../components/HotelCard';
 import SearchBar from '../components/SearchBar';
 import { hotelsData } from '../data/hotelData';
@@ -12,6 +12,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const hotels = useSelector((state: RootState) => state.hotels.filteredHotels);
   const searchQuery = useSelector((state: RootState) => state.hotels.searchQuery);
+  const filterLocation = useSelector((state: RootState) => state.hotels.filterLocation);
 
   useEffect(() => {
     dispatch(setHotels(hotelsData));
@@ -19,6 +20,10 @@ const HomeScreen = () => {
 
   const handleSearchChange = (text: string) => {
     dispatch(setSearchQuery(text));
+  };
+
+  const handleRemoveFilter = () => {
+    dispatch(clearFilter());
   };
 
   useEffect(() => {
@@ -33,6 +38,13 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar value={searchQuery} onChange={handleSearchChange} />
+      {filterLocation && (
+        <View style={styles.filterTagContainer}>
+          <TouchableOpacity style={styles.filterTag} onPress={handleRemoveFilter}>
+            <Text style={styles.filterTagText}>x {filterLocation}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <ScrollView>
         {filteredHotels.length > 0 ? (
           filteredHotels.map((hotel) => (
@@ -60,6 +72,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     padding: 10,
+  },
+  filterTagContainer: {
+    flexDirection: 'row',
+    marginVertical: 10,
+  },
+  filterTag: {
+    backgroundColor: '#ddd',
+    padding: 8,
+    borderRadius: 5,
+    marginRight: 10,
+  },
+  filterTagText: {
+    color: '#333',
   },
   hotelContainer: {
     position: 'relative',

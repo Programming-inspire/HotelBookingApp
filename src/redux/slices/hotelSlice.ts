@@ -20,12 +20,14 @@ interface HotelsState {
   hotels: Hotel[];
   searchQuery: string;
   filteredHotels: Hotel[];
+  filterLocation: string; // Add this line
 }
 
 const initialState: HotelsState = {
   hotels: [],
   searchQuery: '',
   filteredHotels: [],
+  filterLocation: '', // Add this line
 };
 
 export const filterHotels = createAsyncThunk(
@@ -52,6 +54,13 @@ const hotelsSlice = createSlice({
     setFilteredHotels(state, action: PayloadAction<Hotel[]>) {
       state.filteredHotels = action.payload;
     },
+    setFilterLocation(state, action: PayloadAction<string>) { // Add this reducer
+      state.filterLocation = action.payload;
+    },
+    clearFilter(state) { // Add this reducer
+      state.filteredHotels = state.hotels;
+      state.filterLocation = '';
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(filterHotels.fulfilled, (state, action) => {
@@ -61,5 +70,5 @@ const hotelsSlice = createSlice({
   },
 });
 
-export const { setHotels, setSearchQuery, setFilteredHotels } = hotelsSlice.actions;
+export const { setHotels, setSearchQuery, setFilteredHotels, setFilterLocation, clearFilter } = hotelsSlice.actions;
 export default hotelsSlice.reducer;
