@@ -12,9 +12,9 @@ const SignUp: React.FC<{ onSignUpSuccess: () => void }> = ({ onSignUpSuccess }) 
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/register', { username, email, password, phone });
+      await axios.post('http://localhost:5000/register', { username, email, password, phone });
       Alert.alert('Success', 'User registered successfully', [
-        { text: 'OK', onPress: onSignUpSuccess }
+        { text: 'OK', onPress: onSignUpSuccess },
       ]);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response && error.response.data) {

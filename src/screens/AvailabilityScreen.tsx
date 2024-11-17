@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux/store';
 import { filterHotels, setFilterLocation } from '../redux/slices/hotelSlice';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types/navigation';
 
 const AvailabilityScreen = () => {
   const [city, setCity] = useState('');
@@ -13,14 +15,14 @@ const AvailabilityScreen = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleFilter = () => {
     const formattedStartDate = startDate.toISOString().split('T')[0];
     const formattedEndDate = endDate.toISOString().split('T')[0];
     dispatch(filterHotels({ city, startDate: formattedStartDate, endDate: formattedEndDate }));
-    dispatch(setFilterLocation(city)); // Set the filter location
+    dispatch(setFilterLocation(city));
     navigation.navigate('Dashboard');
   };
 

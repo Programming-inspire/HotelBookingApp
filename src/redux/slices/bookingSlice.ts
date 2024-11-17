@@ -1,5 +1,3 @@
-// src/redux/slices/bookingSlice.ts
-
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -26,7 +24,6 @@ const initialState: BookingState = {
   error: null,
 };
 
-// Fetch user bookings from the backend
 export const fetchUserBookings = createAsyncThunk(
   'bookings/fetchUserBookings',
   async (userId: string) => {
@@ -37,13 +34,13 @@ export const fetchUserBookings = createAsyncThunk(
   }
 );
 
-// Cancel a booking
+
 export const cancelBooking = createAsyncThunk(
   'bookings/cancelBooking',
   async (bookingId: string, { rejectWithValue }) => {
     try {
       await axios.delete(`http://localhost:5000/cancel-booking/${bookingId}`);
-      return bookingId; // Return the booking ID to remove it from the Redux store
+      return bookingId;
     } catch (error) {
       console.error("Error cancelling booking:", error);
       return rejectWithValue('Error cancelling booking');

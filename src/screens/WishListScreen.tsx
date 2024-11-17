@@ -1,5 +1,3 @@
-// src/screens/WishlistScreen.tsx
-
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';

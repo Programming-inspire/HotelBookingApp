@@ -1,5 +1,3 @@
-// src/screens/BookingScreen.tsx
-
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -36,7 +34,7 @@ const BookingScreen: React.FC = () => {
   const calculateTotalAmount = () => {
     const days = (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24);
     const amount = days * parseFloat(price.replace(/,/g, ''));
-    const roundedAmount = Math.round(amount * 100) / 100; // Round to two decimal places
+    const roundedAmount = Math.round(amount * 100) / 100;
     setTotalAmount(roundedAmount);
   };
 
@@ -92,9 +90,9 @@ const BookingScreen: React.FC = () => {
         totalAmount,
       });
 
-      const newBooking = response.data; // Assuming the backend returns the new booking
+      const newBooking = response.data;
       dispatch(addBooking(newBooking));
-      dispatch(fetchUserBookings(userId)); // Refresh the bookings
+      dispatch(fetchUserBookings(userId));
 
       Alert.alert('Success', response.data.message);
     } catch (error) {
@@ -170,7 +168,7 @@ const BookingScreen: React.FC = () => {
             <TouchableOpacity style={styles.calculateButton} onPress={calculateTotalAmount}>
               <Text style={styles.calculateButtonText}>Calculate Total Amount</Text>
             </TouchableOpacity>
-            <Text style={styles.totalAmount}>Total Amount: ${totalAmount}</Text>
+            <Text style={styles.totalAmount}>Total Amount: ₹{totalAmount}</Text>
 
             <TextInput
               style={styles.input}

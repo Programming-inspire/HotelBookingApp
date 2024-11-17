@@ -13,13 +13,8 @@ const ProfileScreen = () => {
 
   const handleLogout = async () => {
     try {
-      // Clear any stored user data or tokens here
       await AsyncStorage.removeItem('token');
-
-      // Dispatch clearUser action
       dispatch(clearUser());
-
-      // Navigate to the AuthScreen
       navigation.replace('AuthScreen');
     } catch (error) {
       console.error('Error logging out:', error);

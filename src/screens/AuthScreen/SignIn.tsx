@@ -19,10 +19,8 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
       console.log('Response received:', response.data);
       const { token, user } = response.data;
 
-      // Save token to AsyncStorage
       await AsyncStorage.setItem('token', token);
 
-      // Dispatch setUser action
       dispatch(setUser({ id: user._id, name: user.username, email: user.email }));
 
       Alert.alert('Success', 'User logged in successfully', [

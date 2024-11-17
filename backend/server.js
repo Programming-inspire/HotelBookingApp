@@ -1,10 +1,9 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const User = require('./models/User');
 const Booking = require('./models/Booking');
-const Hotel = require('./models/Hotel'); // Import the Hotel model
+const Hotel = require('./models/Hotel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -20,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/HotelAuth')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-// Mock Twilio client for development/testing
+// send mocksms for testing
 const sendMockSms = async ({ body, from, to }) => {
   console.log(`Mock SMS sent from ${from} to ${to}: ${body}`);
   return Promise.resolve();
@@ -38,12 +37,12 @@ app.post('/forgot-password', async (req, res) => {
 
     const otp = crypto.randomInt(100000, 999999).toString();
     user.resetPasswordToken = otp;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
 
     await sendMockSms({
       body: `Your OTP for password reset is ${otp}`,
-      from: 'MockTwilioNumber',
+      from: 'easystay.support.com',
       to: user.phone,
     });
 
@@ -139,7 +138,6 @@ app.post('/login', async (req, res) => {
 
 
 
-// Check availability
 app.post('/check-availability', async (req, res) => {
   const { hotelName, location, startDate, endDate } = req.body;
   try {
@@ -168,8 +166,6 @@ app.post('/check-availability', async (req, res) => {
 
 
 
-
-// Create a booking
 app.post('/book', async (req, res) => {
   const { hotelId, hotelName, location, userId, startDate, endDate, adults, kids, totalAmount } = req.body;
   try {
@@ -181,10 +177,10 @@ app.post('/book', async (req, res) => {
     }
 
     const newBooking = new Booking({
-      hotelId: new mongoose.Types.ObjectId(hotelId), // Convert to ObjectId
+      hotelId: new mongoose.Types.ObjectId(hotelId),
       hotelName,
       location,
-      userId: new mongoose.Types.ObjectId(userId), // Convert to ObjectId
+      userId: new mongoose.Types.ObjectId(userId),
       startDate,
       endDate,
       adults,
@@ -203,13 +199,10 @@ app.post('/book', async (req, res) => {
 
 
 
-// Add this endpoint to handle booking cancellation
-// Server-side endpoint to cancel a booking
 app.delete('/cancel-booking/:id', async (req, res) => {
   try {
     const bookingId = req.params.id;
 
-    // Use `findByIdAndDelete` directly on the model to delete the document by its ID
     const deletedBooking = await Booking.findByIdAndDelete(bookingId);
 
     if (!deletedBooking) {
@@ -223,9 +216,6 @@ app.delete('/cancel-booking/:id', async (req, res) => {
   }
 });
 
-
-// Add this endpoint to fetch bookings for a specific user
-// server.js
 
 app.get('/bookings', async (req, res) => {
   const { userId } = req.query;
@@ -241,9 +231,6 @@ app.get('/bookings', async (req, res) => {
 });
 
 
-
-// server.js
-
 app.post('/filter-hotels', async (req, res) => {
   const { city, startDate, endDate } = req.body;
   try {
@@ -252,7 +239,6 @@ app.post('/filter-hotels', async (req, res) => {
 
     console.log(`Filtering hotels for city: ${city}, startDate: ${startDate}, endDate: ${endDate}`);
 
-    // Find hotels that are booked during the selected dates
     const unavailableHotels = await Booking.find({
       location: city,
       $or: [
@@ -262,12 +248,10 @@ app.post('/filter-hotels', async (req, res) => {
 
     console.log('Unavailable hotels:', unavailableHotels);
 
-    // Find all hotels in the selected city
     const hotels = await Hotel.find({ location: city });
 
     console.log('All hotels in city:', hotels);
 
-    // Mark hotels as available or not based on the booking data
     const filteredHotels = hotels.map(hotel => ({
       ...hotel.toObject(),
       available: !unavailableHotels.includes(hotel.name),

@@ -1,5 +1,3 @@
-// src/components/HotelCard.tsx
-
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
@@ -9,7 +7,7 @@ import { RootStackParamList } from '../types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 interface HotelCardProps {
-  id: number; // Add this line to include hotel ID
+  id: number;
   name: string;
   location: string;
   rating: number;
@@ -20,7 +18,7 @@ interface HotelCardProps {
   price: string;
   highlights: string[];
   description: string;
-  available?: boolean; // Add this line to handle availability
+  available?: boolean;
 }
 
 type HotelCardNavigationProp = StackNavigationProp<RootStackParamList, 'HotelDetails'>;
@@ -31,7 +29,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ id, name, location, rating, beds,
   const handlePress = () => {
     if (available) {
       navigation.navigate('HotelDetails', {
-        id, // Pass the hotel ID
+        id,
         name,
         location,
         rating,

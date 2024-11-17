@@ -1,5 +1,3 @@
-// src/components/SearchBar.tsx
-
 import React from 'react';
 import { TextInput, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
