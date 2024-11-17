@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux/store';
 import axios from 'axios';
 import { addBooking, fetchUserBookings } from '../redux/slices/bookingSlice';
+import colors from '../assets/color';
 
 type BookingRouteProp = RouteProp<{ params: {
   hotelId: string;
@@ -118,7 +118,7 @@ const BookingScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <View style={styles.container}>
         <TouchableOpacity onPress={() => setShowStartDatePicker(true)} style={styles.datePickerButton}>
           <Text style={styles.datePickerText}>Start Date: {startDate.toDateString()}</Text>
@@ -183,21 +183,22 @@ const BookingScreen: React.FC = () => {
           </>
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background,
   },
   container: {
     padding: 20,
-    backgroundColor: '#FFF',
+    backgroundColor: colors.white,
   },
   datePickerButton: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.primary,
     borderRadius: 5,
     padding: 10,
     marginVertical: 5,
@@ -205,51 +206,60 @@ const styles = StyleSheet.create({
   },
   datePickerText: {
     fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    color: colors.text,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.primary,
     borderRadius: 5,
     padding: 10,
     marginVertical: 5,
+    fontFamily: 'Roboto-Regular',
+    color: colors.text,
   },
   checkAvailabilityButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: colors.accent,
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
     marginVertical: 10,
   },
   checkAvailabilityButtonText: {
-    color: '#FFF',
+    color: colors.white,
     fontSize: 16,
+    fontFamily: 'Montserrat-Bold',
   },
   calculateButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: colors.accent,
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
     marginVertical: 10,
   },
   calculateButtonText: {
-    color: '#FFF',
+    color: colors.white,
     fontSize: 16,
+    fontFamily: 'Montserrat-Bold',
   },
   totalAmount: {
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 10,
+    fontFamily: 'Montserrat-Bold',
+    color: colors.primary,
   },
   payButton: {
-    backgroundColor: 'green',
+    backgroundColor: colors.success,
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
   },
   payButtonText: {
-    color: '#FFF',
+    color: colors.white,
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: 'Montserrat-Bold',
   },
 });
 

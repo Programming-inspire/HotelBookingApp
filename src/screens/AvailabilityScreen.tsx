@@ -8,6 +8,7 @@ import { AppDispatch } from '../redux/store';
 import { filterHotels, setFilterLocation } from '../redux/slices/hotelSlice';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
+import colors from '../assets/color';
 
 const AvailabilityScreen = () => {
   const [city, setCity] = useState('');
@@ -51,7 +52,6 @@ const AvailabilityScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>Check Availability</Text>
         <View style={styles.pickerContainer}>
           <Picker selectedValue={city} onValueChange={(itemValue) => setCity(itemValue)} style={styles.picker}>
             <Picker.Item label="Select City" value="" />
@@ -95,7 +95,7 @@ const AvailabilityScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.background,
   },
   scrollContainer: {
     padding: 16,
@@ -105,41 +105,50 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
+    color: colors.primary,
+    fontFamily: 'Montserrat-Bold',
   },
   pickerContainer: {
     borderRadius: 5,
     marginBottom: 150,
+    borderColor: colors.primary,
   },
   picker: {
     height: 50,
   },
   dateButton: {
-    backgroundColor: '#ddd',
+    backgroundColor: colors.secondary,
     padding: 10,
     marginVertical: 10,
     borderRadius: 5,
+    alignItems: 'center',
   },
   dateButtonText: {
     fontSize: 16,
+    color: colors.white,
+    fontFamily: 'Roboto-Regular',
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: colors.primary,
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
     borderRadius: 5,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
+    fontFamily: 'Roboto-Regular',
+    color: colors.text,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: colors.accent,
     padding: 12,
     alignItems: 'center',
     borderRadius: 5,
   },
   buttonText: {
-    color: 'white',
+    color: colors.white,
     fontSize: 16,
+    fontFamily: 'Montserrat-Bold',
   },
 });
 

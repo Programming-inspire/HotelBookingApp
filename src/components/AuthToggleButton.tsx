@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableWithoutFeedback, Animated, StyleSheet } from 'react-native';
+import colors from '../assets/color';
 
 type AuthToggleButtonProps = {
   isSignIn: boolean;
@@ -33,17 +34,17 @@ const styles = StyleSheet.create({
     width: 220,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     position: 'relative',
     justifyContent: 'center',
-    borderColor: '#000000',
+    borderColor: colors.primary,
     borderWidth: 1,
     overflow: 'hidden',
   },
   slider: {
     width: '50%',
     height: '100%',
-    backgroundColor: '#F8F2DA',
+    backgroundColor: colors.accent,
     borderRadius: 25,
     position: 'absolute',
     borderWidth: 0.5,
@@ -58,10 +59,10 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     lineHeight: 50,
-    color: 'grey',
+    color: colors.text,
   },
   activeLabel: {
-    color: '#FFFFFF',
+    color: colors.white,
   },
 });
 

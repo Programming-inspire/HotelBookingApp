@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
+import colors from '../../assets/color';
 
 const { width } = Dimensions.get('window');
 
@@ -63,7 +64,7 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
         style={styles.container}
       >
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Icon name="arrow-left" size={24} color="black" />
+          <Icon name="arrow-left" size={24} color={colors.primary} />
         </TouchableOpacity>
         <View style={styles.innerContainer}>
           {step === 1 && (
@@ -72,7 +73,7 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
               <TextInput
                 style={styles.input}
                 placeholder="Phone"
-                placeholderTextColor="#000"
+                placeholderTextColor={colors.text}
                 value={phone}
                 onChangeText={setPhone}
               />
@@ -87,7 +88,7 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
               <TextInput
                 style={styles.input}
                 placeholder="OTP"
-                placeholderTextColor="#000"
+                placeholderTextColor={colors.text}
                 value={otp}
                 onChangeText={setOtp}
               />
@@ -102,7 +103,7 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
               <TextInput
                 style={styles.input}
                 placeholder="New Password"
-                placeholderTextColor="#000"
+                placeholderTextColor={colors.text}
                 secureTextEntry
                 value={newPassword}
                 onChangeText={setNewPassword}
@@ -123,7 +124,7 @@ export default ForgotPassword;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
   },
   container: {
     flex: 1,
@@ -139,36 +140,42 @@ const styles = StyleSheet.create({
     width: width * 0.8,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     alignItems: 'center',
-    borderColor: '#000',
+    borderColor: colors.primary,
     borderWidth: 1,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#000',
+    color: colors.primary,
   },
   input: {
     width: '100%',
     height: 40,
-    borderColor: '#000',
+    borderColor: colors.primary,
     borderWidth: 1,
     marginBottom: 15,
     paddingHorizontal: 10,
-    color: '#000',
+    color: colors.text,
+    borderRadius: 5,
   },
   button: {
     width: '100%',
     height: 40,
-    backgroundColor: '#000',
+    backgroundColor: colors.accent,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 18,
   },
 });

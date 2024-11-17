@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/store';
 import { fetchUserBookings, cancelBooking } from '../redux/slices/bookingSlice';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import colors from '../assets/color';
 
 const WishlistScreen = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -40,23 +42,90 @@ const WishlistScreen = () => {
           console.log('End Date:', endDate);
           return (
             <View key={booking._id} style={styles.bookingItem}>
-              <Text>{booking.hotelName}</Text>
-              <Text>{booking.location}</Text>
-              <Text>{startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</Text>
-              <Button title="Cancel Booking" color="red" onPress={() => handleCancelBooking(booking._id)} />
+              <Text style={styles.hotelName}>{booking.hotelName}</Text>
+              <View style={styles.detailContainer}>
+                <Icon name="map-marker" size={16} color={colors.primary} />
+                <Text style={styles.location}>{booking.location}</Text>
+              </View>
+              <View style={styles.detailContainer}>
+                <Icon name="calendar" size={16} color={colors.primary} />
+                <Text style={styles.dates}>{startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</Text>
+              </View>
+              <TouchableOpacity style={styles.cancelButton} onPress={() => handleCancelBooking(booking._id)}>
+                <Text style={styles.cancelButtonText}>Cancel Booking</Text>
+              </TouchableOpacity>
             </View>
           );
         })
       ) : (
-        <Text>No bookings found</Text>
+        <Text style={styles.noBookingsText}>No bookings found</Text>
       )}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, padding: 20 },
-  bookingItem: { marginBottom: 20, padding: 10, borderWidth: 1, borderColor: '#ccc' },
+  container: {
+    flexGrow: 1,
+    padding: 20,
+    backgroundColor: colors.background,
+  },
+  bookingItem: {
+    marginBottom: 20,
+    padding: 15,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderRadius: 10,
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  hotelName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.primary,
+    fontFamily: 'Montserrat-Bold',
+    marginBottom: 5,
+  },
+  detailContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  location: {
+    fontSize: 16,
+    color: colors.text,
+    fontFamily: 'Roboto-Regular',
+    marginLeft: 5,
+  },
+  dates: {
+    fontSize: 16,
+    color: colors.text,
+    fontFamily: 'Roboto-Regular',
+    marginLeft: 5,
+  },
+  cancelButton: {
+    backgroundColor: colors.error,
+    paddingVertical: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  cancelButtonText: {
+    color: colors.white,
+    fontSize: 16,
+    fontFamily: 'Montserrat-Bold',
+  },
+  noBookingsText: {
+    fontSize: 18,
+    color: colors.text,
+    textAlign: 'center',
+    marginTop: 20,
+    fontFamily: 'Roboto-Regular',
+  },
 });
 
 export default WishlistScreen;

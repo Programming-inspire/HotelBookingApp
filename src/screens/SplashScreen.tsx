@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Logo from '../asset/Original_logo.png';
+import Logo from '../assets/Original_logo.png';
 import { useSplashAnimations } from '../utils/useSplashAnimations';
-
+import colors from '../assets/color';
 
 const SplashScreen = ({ navigation }) => {
   const { springAnim, fadeAnim } = useSplashAnimations();
@@ -23,15 +23,15 @@ const SplashScreen = ({ navigation }) => {
         style={[styles.image, { transform: [{ scale: springAnim }] }]} 
       />
       <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>
-       Easy Stay
+        Easy Stay
       </Animated.Text>
       <View style={styles.iconContainer}>
         <View style={styles.line} />
-        <Icon name="star" size={35} color="#000000" />
+        <Icon name="star" size={35} color={colors.accent} />
         <View style={styles.line} />
       </View>
       <Animated.Text style={[styles.subText, { opacity: fadeAnim }]}>
-         Find Your Perfect Stay, Anywhere, Anytime.
+        Find Your Perfect Stay, Anywhere, Anytime.
       </Animated.Text>
     </View>
   );
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.primary,
   },
   image: {
     width: 312,
@@ -50,17 +50,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    fontFamily: 'Caudex-Bold',
+    fontFamily: 'Montserrat-Bold',
     fontSize: 40,
-    color: '#000000',
+    color: colors.white,
     textAlign: 'center',
     lineHeight: 41,
-
   },
   line: {
     height: 5,
     width: 130,
-    backgroundColor: '#000',
+    backgroundColor: colors.white,
     marginHorizontal: 10,
   },
   iconContainer: {
@@ -69,8 +68,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   subText: {
-    fontFamily: 'Caudex-Bold',
+    fontFamily: 'Roboto-Regular',
     fontSize: 14,
+    color: colors.white,
     marginTop: 10,
   },
 });

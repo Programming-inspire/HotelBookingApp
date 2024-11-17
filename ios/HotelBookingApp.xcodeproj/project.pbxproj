@@ -13,7 +13,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		268B6FB9BFAB7DC69C874D64 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		3354DA07AFBA4268BE0922D8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F3038CA1F4E4728B7A172EF /* Roboto-Regular.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-HotelBookingApp-HotelBookingAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-HotelBookingApp-HotelBookingAppTests.a */; };
+		7A1B4ED8329A4E459B905F3B /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 809AECCF68F148F58CFED145 /* Montserrat-Bold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -44,8 +46,10 @@
 		5709B34CF0A7D63546082F79 /* Pods-HotelBookingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HotelBookingApp.release.xcconfig"; path = "Target Support Files/Pods-HotelBookingApp/Pods-HotelBookingApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-HotelBookingApp-HotelBookingAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HotelBookingApp-HotelBookingAppTests.debug.xcconfig"; path = "Target Support Files/Pods-HotelBookingApp-HotelBookingAppTests/Pods-HotelBookingApp-HotelBookingAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-HotelBookingApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HotelBookingApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		809AECCF68F148F58CFED145 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = HotelBookingApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-HotelBookingApp-HotelBookingAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HotelBookingApp-HotelBookingAppTests.release.xcconfig"; path = "Target Support Files/Pods-HotelBookingApp-HotelBookingAppTests/Pods-HotelBookingApp-HotelBookingAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		8F3038CA1F4E4728B7A172EF /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -135,6 +139,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				E520947C8D004757B1FAEE05 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -159,6 +164,16 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-HotelBookingApp-HotelBookingAppTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E520947C8D004757B1FAEE05 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				809AECCF68F148F58CFED145 /* Montserrat-Bold.ttf */,
+				8F3038CA1F4E4728B7A172EF /* Roboto-Regular.ttf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +272,8 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				268B6FB9BFAB7DC69C874D64 /* PrivacyInfo.xcprivacy in Resources */,
+				7A1B4ED8329A4E459B905F3B /* Montserrat-Bold.ttf in Resources */,
+				3354DA07AFBA4268BE0922D8 /* Roboto-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

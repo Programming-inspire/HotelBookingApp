@@ -7,6 +7,7 @@ import HotelCard from '../components/HotelCard';
 import SearchBar from '../components/SearchBar';
 import { hotelsData } from '../data/hotelData';
 import { RootState } from '../redux/store';
+import colors from '../assets/color';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -70,7 +71,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.background,
     padding: 10,
   },
   filterTagContainer: {
@@ -78,16 +79,17 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   filterTag: {
-    backgroundColor: '#ddd',
+    backgroundColor: colors.secondary,
     padding: 8,
     borderRadius: 5,
     marginRight: 10,
   },
   filterTagText: {
-    color: '#333',
+    color: colors.white,
   },
   hotelContainer: {
     position: 'relative',
+    marginBottom: 10,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   overlayText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
   },
   noHotelsText: {
     fontSize: 18,
-    color: 'gray',
+    color: colors.text,
   },
 });
 

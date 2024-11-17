@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
+import colors from '../assets/color';
 
 interface HotelCardProps {
   id: number;
@@ -63,7 +64,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ id, name, location, rating, beds,
       <Text style={styles.name}>{name}</Text>
       <View style={styles.detailsContainer}>
         <View style={styles.detailItem}>
-          <Icon name="map-marker" size={16} color="#000" />
+          <Icon name="map-marker" size={16} color={colors.text} />
           <Text style={styles.details}>{location}</Text>
         </View>
         <View style={styles.detailItem}>
@@ -77,15 +78,15 @@ const HotelCard: React.FC<HotelCardProps> = ({ id, name, location, rating, beds,
       </View>
       <View style={styles.detailsContainer}>
         <View style={styles.detailItem}>
-          <Icon name="bed" size={16} color="#000" />
+          <Icon name="bed" size={16} color={colors.text} />
           <Text style={styles.details}>{beds} Beds</Text>
         </View>
         <View style={styles.detailItem}>
-          <Icon name="bath" size={16} color="#000" />
+          <Icon name="bath" size={16} color={colors.text} />
           <Text style={styles.details}>{bathrooms} Baths</Text>
         </View>
         <View style={styles.detailItem}>
-          <Icon name="users" size={16} color="#000" />
+          <Icon name="users" size={16} color={colors.text} />
           <Text style={styles.details}>{guests} Guests</Text>
         </View>
       </View>
@@ -95,11 +96,15 @@ const HotelCard: React.FC<HotelCardProps> = ({ id, name, location, rating, beds,
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     margin: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 10,
     elevation: 3,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   wrapper: {
     height: 200,
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 5,
+    borderRadius: 10,
   },
   dot: {
     backgroundColor: 'rgba(0,0,0,.2)',
@@ -122,7 +127,7 @@ const styles = StyleSheet.create({
     margin: 3,
   },
   activeDot: {
-    backgroundColor: '#000',
+    backgroundColor: colors.primary,
     width: 10,
     height: 10,
     borderRadius: 5,
@@ -132,6 +137,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     marginVertical: 5,
+    color: colors.primary,
   },
   detailsContainer: {
     flexDirection: 'row',
@@ -143,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   details: {
-    color: 'black',
+    color: colors.text,
     fontSize: 16,
     marginLeft: 5,
   },

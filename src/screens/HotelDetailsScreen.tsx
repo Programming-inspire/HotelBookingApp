@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,6 +8,7 @@ import { RootStackParamList } from '../types/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import MapView, { Marker } from 'react-native-maps';
+import colors from '../assets/color';
 
 type HotelDetailRouteProp = RouteProp<{ params: {
   id: number;
@@ -60,7 +60,7 @@ const HotelDetailScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
         <Swiper
           style={styles.wrapper}
@@ -122,25 +122,26 @@ const HotelDetailScreen: React.FC = () => {
         </View>
 
         <View style={styles.priceContainer}>
-          <Text style={styles.price}>${price} total</Text>
+          <Text style={styles.price}>₹{price} total</Text>
         </View>
 
         <TouchableOpacity style={styles.bookButton} onPress={handleBookNow}>
           <Text style={styles.bookButtonText}>Book Now</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFF',
+    margin: 10,
+    backgroundColor: colors.background,
   },
   container: {
     padding: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: colors.white,
   },
   wrapper: {
     height: 250,
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     margin: 3,
   },
   activeDot: {
-    backgroundColor: '#000',
+    backgroundColor: colors.primary,
     width: 10,
     height: 10,
     borderRadius: 5,
@@ -173,11 +174,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginVertical: 10,
+    color: colors.primary,
+    fontFamily: 'Montserrat-Bold',
   },
   location: {
     fontSize: 16,
-    color: '#666',
+    color: colors.text,
     marginBottom: 10,
+    fontFamily: 'Roboto-Regular',
   },
   ratingContainer: {
     flexDirection: 'row',
@@ -187,14 +191,16 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: 16,
     marginLeft: 5,
-    color: '#333',
+    color: colors.text,
+    fontFamily: 'Roboto-Regular',
   },
   infoContainer: {
     marginVertical: 10,
   },
   infoText: {
     fontSize: 16,
-    color: '#333',
+    color: colors.text,
+    fontFamily: 'Roboto-Regular',
   },
   priceContainer: {
     marginVertical: 15,
@@ -203,22 +209,26 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'green',
+    fontFamily: 'Montserrat-Bold',
   },
   bookButton: {
-    backgroundColor: 'green',
+    backgroundColor: colors.success,
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
   },
   bookButtonText: {
-    color: '#FFF',
+    color: colors.white,
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: 'Montserrat-Bold',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 20,
+    color: colors.primary,
+    fontFamily: 'Montserrat-Bold',
   },
   highlightsContainer: {
     flexDirection: 'row',
@@ -226,19 +236,21 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   highlightItem: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: colors.secondary,
     borderRadius: 5,
     padding: 5,
     margin: 5,
   },
   highlightText: {
     fontSize: 14,
-    color: '#555',
+    color: colors.white,
+    fontFamily: 'Roboto-Regular',
   },
   description: {
     fontSize: 16,
-    color: '#333',
+    color: colors.text,
     marginVertical: 10,
+    fontFamily: 'Roboto-Regular',
   },
   mapContainer: {
     height: 200,

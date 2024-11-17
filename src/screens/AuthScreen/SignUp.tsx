@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import axios from 'axios';
+import colors from '../../assets/color';
 
 const { width } = Dimensions.get('window');
 
@@ -31,21 +32,21 @@ const SignUp: React.FC<{ onSignUpSuccess: () => void }> = ({ onSignUpSuccess }) 
       <TextInput
         style={styles.input}
         placeholder="Username"
-        placeholderTextColor="#000"
+        placeholderTextColor={colors.text}
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor="#000"
+        placeholderTextColor={colors.text}
         value={email}
         onChangeText={(text) => setEmail(text.toLowerCase())}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
-        placeholderTextColor="#000"
+        placeholderTextColor={colors.text}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -53,7 +54,7 @@ const SignUp: React.FC<{ onSignUpSuccess: () => void }> = ({ onSignUpSuccess }) 
       <TextInput
         style={styles.input}
         placeholder="Phone"
-        placeholderTextColor="#000"
+        placeholderTextColor={colors.text}
         value={phone}
         onChangeText={setPhone}
       />
@@ -71,36 +72,42 @@ const styles = StyleSheet.create({
     width: width * 0.8,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     alignItems: 'center',
-    borderColor: '#000',
+    borderColor: colors.primary,
     borderWidth: 1,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#000',
+    color: colors.primary,
   },
   input: {
     width: '100%',
     height: 40,
-    borderColor: '#000',
+    borderColor: colors.primary,
     borderWidth: 1,
     marginBottom: 15,
     paddingHorizontal: 10,
-    color: '#000',
+    color: colors.text,
+    borderRadius: 5,
   },
   button: {
     width: '100%',
     height: 40,
-    backgroundColor: '#000',
+    backgroundColor: colors.accent,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 18,
   },
 });

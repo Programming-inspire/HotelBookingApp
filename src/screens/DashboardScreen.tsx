@@ -5,13 +5,27 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from './HomeScreen';
 import WishListScreen from './WishListScreen';
 import ProfileScreen from './ProfileScreen';
-
+import colors from '../assets/color';
 
 const Tab = createBottomTabNavigator();
 
 const DashboardScreen = () => {
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarActiveTintColor: colors.accent,
+        tabBarInactiveTintColor: colors.text,
+        tabBarStyle: {
+          borderTopWidth: 0,
+          elevation: 5,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: 'Roboto-Regular',
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -45,4 +59,3 @@ const DashboardScreen = () => {
 };
 
 export default DashboardScreen;
-

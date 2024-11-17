@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../../assets/color';
 
 const { width } = Dimensions.get('window');
 
@@ -14,9 +15,7 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const handleSignIn = async () => {
     try {
-      console.log('Attempting to sign in');
       const response = await axios.post('http://localhost:5000/login', { email, password });
-      console.log('Response received:', response.data);
       const { token, user } = response.data;
 
       await AsyncStorage.setItem('token', token);
@@ -27,7 +26,6 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
         { text: 'OK', onPress: () => navigation.navigate('Dashboard') }
       ]);
     } catch (error) {
-      console.error('Error logging in:', error);
       Alert.alert('Error', 'Invalid credentials. Please try again.');
     }
   };
@@ -38,14 +36,14 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor="#000"
+        placeholderTextColor={colors.text}
         value={email}
         onChangeText={(text) => setEmail(text.toLowerCase())}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
-        placeholderTextColor="#000"
+        placeholderTextColor={colors.text}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -67,40 +65,46 @@ const styles = StyleSheet.create({
     width: width * 0.8,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     alignItems: 'center',
-    borderColor: '#000',
+    borderColor: colors.primary,
     borderWidth: 1,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#000',
+    color: colors.primary,
   },
   input: {
     width: '100%',
     height: 40,
-    borderColor: '#000',
+    borderColor: colors.primary,
     borderWidth: 1,
     marginBottom: 15,
     paddingHorizontal: 10,
-    color: '#000',
+    color: colors.text,
+    borderRadius: 5,
   },
   button: {
     width: '100%',
     height: 40,
-    backgroundColor: '#000',
+    backgroundColor: colors.accent,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 18,
   },
   forgotPasswordText: {
-    color: 'blue',
+    color: colors.secondary,
     marginTop: 10,
   },
 });
